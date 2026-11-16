@@ -1,0 +1,24 @@
+# Dependencias y salida de build (las genera GitHub Actions)
+node_modules/
+dist/
+tools/package-lock.json
+
+# Datos locales que NO deben subirse
+*.sqlite
+*.sqlite3
+*.db
+.env
+.env.*
+*.log
+
+# Archivos del sistema y del editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+
+# Material fuente pesado: guarda aquí los originales sin optimizar
+_originales/

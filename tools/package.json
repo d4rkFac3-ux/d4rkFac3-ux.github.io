@@ -1,0 +1,9 @@
+{
+    "name": "d4rkface-tools",
+    "private": true,
+    "type": "module",
+    "description": "Herramientas de build del sitio (listado, sitemap y optimización de imágenes).",
+    "optionalDependencies": {
+        "sharp": "^0.33.5"
+    }
+}

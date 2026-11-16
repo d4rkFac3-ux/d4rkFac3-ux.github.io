@@ -1,0 +1,20 @@
+[
+  {
+    "titulo": "Ejemplo: inyección SQL básica",
+    "resumen": "Entrada de ejemplo para ver cómo luce el sitio. Bórrala cuando publiques tu primer reto real.",
+    "url": "/retos/ejemplo/ejemplo-writeup/",
+    "seccion": "retos",
+    "plataforma": "Ejemplo",
+    "plataformaSlug": "ejemplo",
+    "categoria": "Web",
+    "dificultad": "Fácil",
+    "tipo": "reto",
+    "etiquetas": [
+      "sqli",
+      "ejemplo"
+    ],
+    "estado": "retirado",
+    "fecha": "2026-11-16",
+    "borrador": false
+  }
+]

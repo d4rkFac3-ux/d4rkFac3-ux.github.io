@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Nuevo reto (copiar plantilla)",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile", "-Command",
+                "$d = '${input:rutaReto}'; if (Test-Path $d) { Write-Error 'Esa carpeta ya existe'; exit 1 }; Copy-Item -Recurse '${workspaceFolder}\\_plantilla\\reto' $d; Write-Host \"Creado: $d\"; code (Join-Path $d 'index.html')"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Regenerar listado (opcional, requiere Node.js)",
+            "type": "shell",
+            "command": "node tools/build.mjs",
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "rutaReto",
+            "type": "promptString",
+            "description": "Ruta del nuevo reto, por ejemplo: retos\\tryhackme\\nombre-del-reto",
+            "default": "retos\\plataforma\\nombre-del-reto"
+        }
+    ]
+}

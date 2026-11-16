@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="D4rkFace: soluciones paso a paso de retos CTF, máquinas y ejercicios de ciberseguridad en entornos autorizados.">
+    <meta name="theme-color" content="#080d12">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data: https://*.goatcounter.com; font-src 'self'; style-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://*.goatcounter.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="D4rkFace | Soluciones de CTF y ciberseguridad">
+    <meta property="og:description" content="Writeups de retos CTF, máquinas y ejercicios de ciberseguridad, paso a paso.">
+    <meta property="og:image" content="%SITE_URL%/assets/img/og.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>D4rkFace | Soluciones de CTF y ciberseguridad</title>
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="stylesheet" href="/assets/css/site.css">
+    <script src="/assets/js/site.js" defer></script>
+    <script src="/assets/js/listing.js" defer></script>
+</head>
+<body>
+    <header data-include="header"></header>
+
+    <main id="contenido">
+        <section class="hero" id="inicio">
+            <div class="hero-copy">
+                <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> CTF · Máquinas · Ejercicios</p>
+                <h1>Piensa como atacante.<br><span>Resuelve como experto.</span></h1>
+                <p class="hero-description">Guías paso a paso de retos CTF, máquinas vulnerables y ejercicios de ciberseguridad, con la herramienta, la evidencia y la lección de cada uno.</p>
+                <div class="hero-actions">
+                    <a class="btn btn-solid" href="/retos/">Ver soluciones <span aria-hidden="true">↗</span></a>
+                    <a class="btn" href="/vulnerabilidades/">Vulnerabilidades y guías</a>
+                </div>
+                <p class="hero-note"><span aria-hidden="true">✳</span> Usa este conocimiento para proteger. Solo en laboratorios y entornos con autorización.</p>
+            </div>
+
+            <div class="hero-visual">
+                <figure class="hero-figure">
+                    <picture>
+                        <source srcset="/assets/img/darkf4ce-hero.webp" type="image/webp">
+                        <img src="/assets/img/darkf4ce-hero.jpg" width="720" height="1080" alt="Logotipo de darkf4ce: figura encapuchada de neón con ojos rojos sobre un fondo de circuitos">
+                    </picture>
+                    <figcaption class="hero-chip"><span class="status-dot" aria-hidden="true"></span> DARKF4CE / LAB</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <div class="container">
+            <section class="section" aria-labelledby="plataformas-titulo">
+                <div class="section-head">
+                    <h2 id="plataformas-titulo">Plataformas</h2>
+                    <p>Cada plataforma se crea sola al añadir su primera solución.</p>
+                </div>
+                <div class="platform-grid" data-platform-grid></div>
+            </section>
+
+            <section class="section" aria-labelledby="ultimas-titulo">
+                <div class="section-head">
+                    <h2 id="ultimas-titulo">Últimas soluciones</h2>
+                    <a class="btn" href="/retos/">Ver todas <span aria-hidden="true">→</span></a>
+                </div>
+                <ul class="entry-list" data-latest></ul>
+            </section>
+        </div>
+    </main>
+
+    <footer data-include="footer"></footer>
+</body>
+</html>

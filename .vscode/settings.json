@@ -1,0 +1,8 @@
+{
+    "liveServer.settings.root": "/",
+    "liveServer.settings.donotShowInfoMsg": true,
+    "files.associations": { "*.html": "html" },
+    "editor.formatOnSave": false,
+    "git.autofetch": true,
+    "git.confirmSync": false
+}
