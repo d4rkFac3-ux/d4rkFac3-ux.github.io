@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Soluciones de retos CTF, máquinas y ejercicios de ciberseguridad. Filtra por plataforma, categoría y dificultad.">
+    <meta name="description" content="Soluciones de retos CTF, máquinas y ejercicios de ciberseguridad. Filtra por plataforma, letra, categoría, dificultad y tipo.">
     <meta name="theme-color" content="#080d12">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data: https://*.goatcounter.com; font-src 'self'; style-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://*.goatcounter.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com">
@@ -17,11 +17,209 @@
 <body>
     <header data-include="header"></header>
 
-    <main id="contenido" class="container section">
+    <!--
+    =====================================================================
+    GUÍA RÁPIDA PARA EDITAR ESTA PÁGINA
+    =====================================================================
+    La página tiene 6 bloques, en este orden. Cada bloque está marcado
+    abajo con un comentario "BLOQUE n". Busca esa palabra con Ctrl+F.
+
+      BLOQUE 1  Plataformas            (lista de botones)
+      BLOQUE 2  Letras A-Z             (lista de botones)
+      BLOQUE 3  Cuadro de búsqueda
+      BLOQUE 4  Barra: categoría, dificultad y tipo   (3 listas de botones)
+      BLOQUE 5  Título "Últimos retos subidos" + caja con todos los retos
+      BLOQUE 6  Plantilla de cada tarjeta de reto
+
+    CÓMO FUNCIONAN LAS LISTAS DE FILTRO
+    ===================================
+    Cada filtro es una lista <ul data-filtro="..."> y cada opción es un
+    <li> con un botón. Lo único que importa es data-valor="...":
+    debe escribirse IGUAL que el dato del reto en su bloque "reto-meta".
+
+        Ejemplo: en el reto pusiste  "plataforma": "Root-Me"
+                 en la lista pones   data-valor="Root-Me"
+
+    Para AÑADIR una opción: copia un <li> completo y cambia el
+    data-valor y el texto visible.
+    Para QUITAR una opción: borra su <li>.
+    El primer <li> de cada lista (data-valor="") es "Todas": no lo borres.
+
+    Las tarjetas de retos NO se escriben a mano: salen solas del archivo
+    assets/data/retos.json, que se genera al hacer push. Lo que sí editas
+    es la PLANTILLA de la tarjeta (BLOQUE 6).
+    =====================================================================
+    -->
+
+    <main id="contenido" class="container section explorador" data-explorador="retos">
         <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Repositorio de soluciones</p>
         <h1>Retos y máquinas</h1>
-        <p>Filtra por plataforma, categoría o dificultad, o busca por título y etiqueta. Marca "Completado" para llevar tu propio avance (se guarda solo en tu navegador).</p>
-        <div data-listing="retos"></div>
+        <p>Elige una plataforma, una letra o escribe en el buscador. Puedes combinar los filtros.</p>
+
+        <!-- ============================================================
+             BLOQUE 1 · PLATAFORMAS
+             Una opción por plataforma. data-valor = campo "plataforma"
+             del reto (igual, con mayúsculas y guiones).
+             ============================================================ -->
+        <section class="filtro-bloque" aria-labelledby="t-plataformas">
+            <h2 class="filtro-titulo" id="t-plataformas">Plataformas</h2>
+            <ul class="filtro-lista" data-filtro="plataforma">
+                <li><button type="button" class="filtro-btn" data-valor="">Todas</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="Root-Me">Root-Me</button></li>
+                <!-- EJEMPLO para añadir otra plataforma (quita las flechas del comentario):
+                <li><button type="button" class="filtro-btn" data-valor="TryHackMe">TryHackMe</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="Hack The Box">Hack The Box</button></li>
+                -->
+            </ul>
+        </section>
+
+        <!-- ============================================================
+             BLOQUE 2 · LETRAS (filtra por la primera letra del título)
+             "#" agrupa los títulos que empiezan con número.
+             Normalmente no necesitas tocar esta lista.
+             ============================================================ -->
+        <section class="filtro-bloque" aria-labelledby="t-letras">
+            <h2 class="filtro-titulo" id="t-letras">Por letra inicial</h2>
+            <ul class="filtro-lista filtro-lista-letras" data-filtro="letra">
+                <li><button type="button" class="filtro-btn" data-valor="">Todas</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="#">#</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="A">A</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="B">B</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="C">C</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="D">D</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="E">E</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="F">F</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="G">G</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="H">H</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="I">I</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="J">J</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="K">K</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="L">L</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="M">M</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="N">N</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="O">O</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="P">P</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="Q">Q</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="R">R</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="S">S</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="T">T</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="U">U</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="V">V</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="W">W</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="X">X</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="Y">Y</button></li>
+                <li><button type="button" class="filtro-btn" data-valor="Z">Z</button></li>
+            </ul>
+        </section>
+
+        <!-- ============================================================
+             BLOQUE 3 · CUADRO DE BÚSQUEDA
+             Busca en título, resumen, plataforma, categoría y etiquetas.
+             Cambia el texto de placeholder="" si quieres otra pista.
+             ============================================================ -->
+        <section class="filtro-bloque buscador" aria-labelledby="t-buscar">
+            <h2 class="filtro-titulo" id="t-buscar">Buscar</h2>
+            <input type="search" data-buscar placeholder="Título, etiqueta, plataforma…" aria-label="Buscar retos">
+        </section>
+
+        <!-- ============================================================
+             BLOQUE 4 · BARRA DE CATEGORÍA, DIFICULTAD Y TIPO
+             Tres listas, una al lado de otra. Mismo sistema de data-valor.
+               - categoría: campo "categoria" del reto
+               - dificultad: Fácil | Media | Difícil | Insana
+               - tipo: reto | maquina | ejercicio (el texto visible puede
+                       llevar tilde, el data-valor NO: "maquina")
+             ============================================================ -->
+        <section class="barra-filtros" aria-label="Filtros por categoría, dificultad y tipo">
+            <div class="filtro-bloque">
+                <h2 class="filtro-titulo">Categoría</h2>
+                <ul class="filtro-lista" data-filtro="categoria">
+                    <li><button type="button" class="filtro-btn" data-valor="">Todas</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="Web">Web</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="Criptografía">Criptografía</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="Forense">Forense</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="Ingeniería inversa">Ingeniería inversa</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="Pwn">Pwn</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="Redes">Redes</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="OSINT">OSINT</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="Misc">Misc</button></li>
+                </ul>
+            </div>
+
+            <div class="filtro-bloque">
+                <h2 class="filtro-titulo">Dificultad</h2>
+                <ul class="filtro-lista" data-filtro="dificultad">
+                    <li><button type="button" class="filtro-btn" data-valor="">Todas</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="Fácil">Fácil</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="Media">Media</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="Difícil">Difícil</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="Insana">Insana</button></li>
+                </ul>
+            </div>
+
+            <div class="filtro-bloque">
+                <h2 class="filtro-titulo">Tipo</h2>
+                <ul class="filtro-lista" data-filtro="tipo">
+                    <li><button type="button" class="filtro-btn" data-valor="">Todos</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="reto">Reto</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="maquina">Máquina</button></li>
+                    <li><button type="button" class="filtro-btn" data-valor="ejercicio">Ejercicio</button></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             BLOQUE 5 · CAJA CON TODOS LOS RETOS
+             - Cambia el texto del <h2> para cambiar el título de arriba.
+             - Los retos aparecen solos, del más nuevo al más antiguo
+               (según "fecha" del reto).
+             - [data-estado] muestra cuántos retos coinciden con los filtros.
+             - [data-limpiar] es el botón que quita todos los filtros.
+             ============================================================ -->
+        <section class="retos-seccion" aria-labelledby="t-ultimos">
+            <div class="retos-cabecera">
+                <h2 class="cajas-titulo" id="t-ultimos">Últimos retos subidos</h2>
+                <button type="button" class="btn" data-limpiar>Limpiar filtros</button>
+            </div>
+            <p class="list-status" data-estado aria-live="polite"></p>
+
+            <div class="caja-retos">
+                <ul class="retos-lista" data-lista-retos></ul>
+                <p class="empty-state" data-sin-resultados hidden>No hay retos que coincidan con los filtros.</p>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             BLOQUE 6 · PLANTILLA DE CADA TARJETA DE RETO
+             Esta plantilla se repite una vez por cada reto. No se ve en
+             la página; el script la copia y rellena los campos.
+
+             Cada elemento con data-campo="..." se rellena solo:
+               enlace      → pone la dirección (href) del reto
+               titulo      → título del reto
+               tipo        → Reto / Máquina / Ejercicio
+               dificultad  → Fácil / Media / Difícil / Insana (con su color)
+               plataforma  → (opcional) plataforma
+               categoria   → (opcional) categoría
+               resumen     → (opcional) resumen corto
+               fecha       → (opcional) fecha de publicación
+
+             Para MOSTRAR un campo extra, añade una línea como:
+                 <span class="badge" data-campo="plataforma">Plataforma</span>
+             Para OCULTAR uno, bórrale la línea. El texto de dentro
+             ("Título del reto", etc.) es solo un ejemplo y se reemplaza.
+             ============================================================ -->
+        <template data-plantilla-reto>
+            <li class="reto-card">
+                <a class="reto-card-link" data-campo="enlace" href="#">
+                    <span class="reto-card-titulo" data-campo="titulo">Título del reto</span>
+                    <span class="reto-card-meta">
+                        <span class="badge" data-campo="tipo">Tipo</span>
+                        <span class="badge" data-campo="dificultad">Dificultad</span>
+                    </span>
+                </a>
+            </li>
+        </template>
     </main>
 
     <footer data-include="footer"></footer>

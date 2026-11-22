@@ -223,14 +223,177 @@
         paint();
     }
 
+    /* ---------- Explorador de retos (página /retos/) ----------
+       Los filtros son listas escritas a mano en el HTML
+       ([data-filtro="..."] con botones [data-valor]); aquí solo se conectan.
+       Las tarjetas salen de <template data-plantilla-reto>. */
+
+    function renderExplorer(root, all) {
+        var section = root.getAttribute('data-explorador');
+        var data = all.filter(function (e) { return e.seccion === section; });
+        var params = new URLSearchParams(location.search);
+        var NAMES = ['plataforma', 'letra', 'categoria', 'dificultad', 'tipo'];
+        var TYPE_LABELS = { reto: 'Reto', maquina: 'Máquina', ejercicio: 'Ejercicio', guia: 'Guía', vulnerabilidad: 'Vulnerabilidad' };
+
+        var getters = {
+            plataforma: function (e) { return e.plataforma; },
+            letra: function (e) {
+                var c = normalize(e.titulo).replace(/[^a-z0-9]/g, '').charAt(0).toUpperCase();
+                return /[A-Z]/.test(c) ? c : '#';
+            },
+            categoria: function (e) { return e.categoria; },
+            dificultad: function (e) { return e.dificultad; },
+            tipo: function (e) { return e.tipo; }
+        };
+
+        var state = { q: params.get('q') || '' };
+        NAMES.forEach(function (name) {
+            var raw = params.get(name) || '';
+            state[name] = (name === 'plataforma' ? raw.split(',')[0] : raw);
+        });
+
+        var search = root.querySelector('[data-buscar]');
+        var status = root.querySelector('[data-estado]');
+        var list = root.querySelector('[data-lista-retos]');
+        var empty = root.querySelector('[data-sin-resultados]');
+        var clear = root.querySelector('[data-limpiar]');
+        var template = root.querySelector('template[data-plantilla-reto]');
+        if (!list) return;
+
+        var buttons = {};
+        NAMES.forEach(function (name) {
+            buttons[name] = Array.prototype.slice.call(root.querySelectorAll('[data-filtro="' + name + '"] [data-valor]'));
+        });
+
+        function same(a, b) { return normalize(a) === normalize(b); }
+
+        /* Atenúa las opciones que no tienen ningún reto (siguen siendo pulsables). */
+        NAMES.forEach(function (name) {
+            buttons[name].forEach(function (button) {
+                var value = button.getAttribute('data-valor');
+                if (!value) return;
+                var any = data.some(function (e) { return same(getters[name](e), value); });
+                if (!any) button.setAttribute('data-vacio', 'true');
+            });
+        });
+
+        function paintButtons() {
+            NAMES.forEach(function (name) {
+                buttons[name].forEach(function (button) {
+                    var value = button.getAttribute('data-valor');
+                    var active = value ? same(value, state[name]) : !state[name];
+                    button.setAttribute('aria-pressed', active ? 'true' : 'false');
+                });
+            });
+        }
+
+        function formatDate(value) {
+            var m = String(value || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+            return m ? m[3] + '/' + m[2] + '/' + m[1] : '';
+        }
+
+        function buildCard(entry) {
+            var card = template && template.content && template.content.firstElementChild
+                ? template.content.firstElementChild.cloneNode(true)
+                : el('li', { 'class': 'reto-card' }, [el('a', { 'class': 'reto-card-link', 'data-campo': 'enlace', href: '#' }, [
+                    el('span', { 'class': 'reto-card-titulo', 'data-campo': 'titulo' })
+                ])]);
+            var values = {
+                titulo: entry.titulo,
+                tipo: TYPE_LABELS[entry.tipo] || entry.tipo,
+                dificultad: entry.dificultad,
+                plataforma: entry.plataforma,
+                categoria: entry.categoria,
+                resumen: entry.resumen,
+                fecha: formatDate(entry.fecha)
+            };
+            var nodes = Array.prototype.slice.call(card.querySelectorAll('[data-campo]'));
+            if (card.hasAttribute('data-campo')) nodes.push(card);
+            nodes.forEach(function (node) {
+                var field = node.getAttribute('data-campo');
+                if (field === 'enlace') { node.setAttribute('href', entry.url); return; }
+                var value = values[field];
+                if (!value) { node.hidden = true; return; }
+                node.textContent = value;
+                if (field === 'dificultad') {
+                    var cls = D4.difficultyClass(value);
+                    if (cls) node.classList.add(cls);
+                }
+            });
+            return card;
+        }
+
+        function currentMatches() {
+            var term = normalize(state.q.trim());
+            return data.filter(function (e) {
+                for (var i = 0; i < NAMES.length; i++) {
+                    var name = NAMES[i];
+                    if (state[name] && !same(getters[name](e), state[name])) return false;
+                }
+                if (term) {
+                    var haystack = normalize([e.titulo, e.resumen, e.plataforma, e.categoria, (e.etiquetas || []).join(' ')].join(' '));
+                    return haystack.indexOf(term) !== -1;
+                }
+                return true;
+            }).sort(function (a, b) {
+                return String(b.fecha).localeCompare(String(a.fecha)) || a.titulo.localeCompare(b.titulo, 'es');
+            });
+        }
+
+        function syncUrl() {
+            var p = new URLSearchParams();
+            if (state.q) p.set('q', state.q);
+            NAMES.forEach(function (name) { if (state[name]) p.set(name, state[name]); });
+            var query = p.toString();
+            history.replaceState(null, '', location.pathname + (query ? '?' + query : ''));
+        }
+
+        function paint() {
+            var matches = currentMatches();
+            while (list.firstChild) list.removeChild(list.firstChild);
+            matches.forEach(function (entry) { list.appendChild(buildCard(entry)); });
+            if (status) status.textContent = matches.length + (matches.length === 1 ? ' reto' : ' retos') + ' de ' + data.length;
+            if (empty) empty.hidden = matches.length !== 0;
+            paintButtons();
+            syncUrl();
+        }
+
+        NAMES.forEach(function (name) {
+            buttons[name].forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var value = button.getAttribute('data-valor');
+                    state[name] = (value && same(value, state[name])) ? '' : value;
+                    paint();
+                });
+            });
+        });
+
+        if (search) {
+            search.value = state.q;
+            search.addEventListener('input', function () { state.q = search.value; paint(); });
+        }
+
+        if (clear) {
+            clear.addEventListener('click', function () {
+                state.q = '';
+                NAMES.forEach(function (name) { state[name] = ''; });
+                if (search) search.value = '';
+                paint();
+            });
+        }
+
+        paint();
+    }
+
     /* ---------- Arranque ---------- */
 
     var hooks = {
         grid: document.querySelector('[data-platform-grid]'),
         latest: document.querySelector('[data-latest]'),
-        listing: document.querySelector('[data-listing]')
+        listing: document.querySelector('[data-listing]'),
+        explorer: document.querySelector('[data-explorador]')
     };
-    if (!hooks.grid && !hooks.latest && !hooks.listing) return;
+    if (!hooks.grid && !hooks.latest && !hooks.listing && !hooks.explorer) return;
 
     fetch('/assets/data/retos.json', { cache: 'no-cache' })
         .then(function (response) { return response.ok ? response.json() : []; })
@@ -240,5 +403,6 @@
             if (hooks.grid) renderPlatforms(hooks.grid, visible);
             if (hooks.latest) renderLatest(hooks.latest, visible);
             if (hooks.listing) renderListing(hooks.listing, visible);
+            if (hooks.explorer) renderExplorer(hooks.explorer, visible);
         });
 })();

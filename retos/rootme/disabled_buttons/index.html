@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="RESUMEN CORTO PARA GOOGLE (una frase).">
+    <meta name="theme-color" content="#080d12">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data: https://*.goatcounter.com; font-src 'self'; style-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://*.goatcounter.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com">
+    <!-- 1) CAMBIA el título de la pestaña (usa el mismo nombre que el h1). -->
+    <title>Nombre del reto | D4rkFace</title>
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="stylesheet" href="/assets/css/site.css">
+    <script src="/assets/js/site.js" defer></script>
+</head>
+<body>
+    <header data-include="header"></header>
+
+    <!--
+        2) DATOS DEL RETO (alimentan el listado, los filtros y las etiquetas).
+           - plataforma: escríbela igual en todos los retos de esa plataforma (así se agrupan).
+           - dificultad: Fácil | Media | Difícil | Insana
+           - tipo: reto | maquina | ejercicio   (carpeta /retos/)
+                   guia | vulnerabilidad        (carpeta /vulnerabilidades/)
+           - estado: permitido | retirado       (solo publica retos que lo permitan)
+           - borrador: true para ocultarlo del listado mientras lo escribes
+           El título y el resumen se toman del <h1> y del párrafo class="lead".
+    -->
+    <script type="application/json" id="reto-meta">
+    {
+        "plataforma": "Rootme",
+        "categoria": "Web",
+        "dificultad": "Fácil",
+        "tipo": "Reconocimiento",
+        "estado": "Activo",
+        "fecha": "2026-11-22",
+        "etiquetas": ["etiqueta1", "etiqueta2"],
+        "borrador": true
+    }
+    </script>
+
+    <main id="contenido" class="reto-page">
+        <nav class="breadcrumb" aria-label="Ruta de navegación" data-breadcrumb></nav>
+
+        <div class="reto-head">
+            <!-- 3) TÍTULO y descripción corta -->
+            <h1>Nombre del reto</h1>
+            <div class="badges" data-meta-chips></div>
+            <p class="lead">Descripción breve: de qué trata el reto y cuál es el objetivo.</p>
+        </div>
+
+        <div class="toc-mobile" data-toc-mobile></div>
+
+        <div class="reto-layout">
+            <!-- 4) HERRAMIENTAS: aparecen en el cuadro lateral (arriba del todo en pantallas pequeñas). -->
+            <aside class="reto-tools" aria-label="Herramientas utilizadas">
+                <h2>Herramientas</h2>
+                <ul>
+                    <li>nmap</li>
+                    <li>gobuster</li>
+                    <li>Burp Suite</li>
+                </ul>
+            </aside>
+
+            <!-- 5) SOLUCIÓN: usa h2 para secciones y h3 para subsecciones (alimentan el índice). -->
+            <article class="reto-solucion">
+                <h2>Objetivo</h2>
+                <p>Explica qué se pide y el contexto del laboratorio.</p>
+
+                <h2>Reconocimiento</h2>
+                <p>Describe cómo empezaste y qué encontraste.</p>
+                <pre><code>nmap -sC -sV 10.10.10.10</code></pre>
+
+                <!-- Imágenes de evidencia: guárdalas en la carpeta img/ de este reto. Haz clic en ellas para ampliar. -->
+                <figure class="evidence">
+                    <img src="./img/captura-01.png" alt="Descripción de la captura" loading="lazy">
+                    <figcaption>Captura 1: qué muestra esta imagen.</figcaption>
+                </figure>
+
+                <h2>Explotación</h2>
+                <h3>Paso 1</h3>
+                <p>Detalla el procedimiento.</p>
+                <h3>Paso 2</h3>
+                <p>Detalla el procedimiento.</p>
+
+                <!-- Flags: no las publiques completas. Usa algo como FLAG{********}. -->
+                <div class="notice"><strong>Spoiler:</strong> las flags están ocultas a propósito. Resuelve el reto tú mismo y usa esta guía solo como apoyo.</div>
+
+                <!-- Video de YouTube (opcional): quita los comentarios y cambia VIDEO_ID.
+                <div class="media-frame">
+                    <iframe src="https://www.youtube-nocookie.com/embed/VIDEO_ID" title="Video de la solución" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                </div>
+                -->
+
+                <h2>Lecciones aprendidas</h2>
+                <ul>
+                    <li>Qué vulnerabilidad estaba presente y por qué.</li>
+                    <li>Cómo se previene o se corrige.</li>
+                </ul>
+            </article>
+
+            <aside class="reto-toc" aria-label="Contenido de la solución" data-toc>
+                <h2>Contenido</h2>
+            </aside>
+        </div>
+    </main>
+
+    <footer data-include="footer"></footer>
+</body>
+</html>
