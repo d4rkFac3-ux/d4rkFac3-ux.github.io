@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="RESUMEN CORTO PARA GOOGLE (una frase).">
+    <meta name="description" content="Solución del reto Disabled Buttons (HTML) de Root-Me: cómo habilitar botones deshabilitados editando el DOM con las herramientas de desarrollador.">
     <meta name="theme-color" content="#080d12">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data: https://*.goatcounter.com; font-src 'self'; style-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://*.goatcounter.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com">
     <!-- 1) CAMBIA el título de la pestaña (usa el mismo nombre que el h1). -->
-    <title>Nombre del reto | D4rkFace</title>
+    <title>Disabled Buttons - HTML | D4rkFace</title>
     <link rel="icon" type="image/png" href="/assets/img/favicon.png">
     <script src="/assets/js/theme.js"></script>
     <link rel="stylesheet" href="/assets/css/site.css">
@@ -29,13 +29,13 @@
     -->
     <script type="application/json" id="reto-meta">
     {
-        "plataforma": "Rootme",
+        "plataforma": "Root-Me",
         "categoria": "Web",
         "dificultad": "Fácil",
-        "tipo": "Reconocimiento",
+        "tipo": "reto",
         "estado": "Activo",
         "fecha": "2026-11-22",
-        "etiquetas": ["etiqueta1", "etiqueta2"],
+        "etiquetas": ["html", "devtools", "client-side"],
         "borrador": true
     }
     </script>
@@ -45,9 +45,9 @@
 
         <div class="reto-head">
             <!-- 3) TÍTULO y descripción corta -->
-            <h1>Nombre del reto</h1>
+            <h1>Disabled Buttons - HTML</h1>
             <div class="badges" data-meta-chips></div>
-            <p class="lead">Descripción breve: de qué trata el reto y cuál es el objetivo.</p>
+            <p class="lead">Este reto consiste en encontrar la forma de activar los controles deshabilitados de un formulario web usando las herramientas de desarrollador del navegador.</p>
         </div>
 
         <div class="toc-mobile" data-toc-mobile></div>
@@ -57,34 +57,58 @@
             <aside class="reto-tools" aria-label="Herramientas utilizadas">
                 <h2>Herramientas</h2>
                 <ul>
-                    <li>nmap</li>
-                    <li>gobuster</li>
-                    <li>Burp Suite</li>
+                    <li>Navegador web</li>
+                    <li>Herramientas de desarrollador (DevTools)</li>
                 </ul>
             </aside>
 
             <!-- 5) SOLUCIÓN: usa h2 para secciones y h3 para subsecciones (alimentan el índice). -->
             <article class="reto-solucion">
                 <h2>Objetivo</h2>
-                <p>Explica qué se pide y el contexto del laboratorio.</p>
+                <p>El reto de Root-Me muestra una página con el mensaje <em>Website temporarily closed</em> y un formulario de acceso para miembros. El campo de texto y el botón aparecen deshabilitados, así que no se puede escribir ni enviar nada. El objetivo es conseguir enviar el formulario a pesar de ello.</p>
 
-                <h2>Reconocimiento</h2>
-                <p>Describe cómo empezaste y qué encontraste.</p>
-                <pre><code>nmap -sC -sV 10.10.10.10</code></pre>
+                <h2>Solución</h2>
 
-                <!-- Imágenes de evidencia: guárdalas en la carpeta img/ de este reto. Haz clic en ellas para ampliar. -->
+                <h3>Paso 1: Inspeccionar el código de la página</h3>
+                <p>Con las herramientas de desarrollador abiertas (<code>F12</code>), la pestaña <strong>Sources</strong> muestra el HTML de la página. El formulario tiene dos controles, el campo <code>auth-login</code> y el botón <code>authbutton</code>, y ambos llevan el atributo <code>disabled</code>.</p>
                 <figure class="evidence">
-                    <img src="./img/captura-01.png" alt="Descripción de la captura" loading="lazy">
-                    <figcaption>Captura 1: qué muestra esta imagen.</figcaption>
+                    <img src="./img/Disabled_1.jpeg" alt="Página del reto a la izquierda y, a la derecha, el código fuente en la pestaña Sources con el campo de texto y el botón marcados como disabled" loading="lazy">
+                    <figcaption>Captura 1: la página y su código fuente. Los dos controles del formulario están deshabilitados.</figcaption>
                 </figure>
 
-                <h2>Explotación</h2>
-                <h3>Paso 1</h3>
-                <p>Detalla el procedimiento.</p>
-                <h3>Paso 2</h3>
-                <p>Detalla el procedimiento.</p>
+                <h3>Paso 2: Quitar el atributo disabled del campo de texto</h3>
+                <p>En la pestaña <strong>Elements</strong> se puede editar el DOM en vivo. Se selecciona la línea del campo de texto y se elimina la palabra <code>disabled</code>. En la captura el campo ya no lo tiene, mientras que el botón todavía lo conserva.</p>
+                <figure class="evidence">
+                    <img src="./img/Disabled_2.jpeg" alt="Pestaña Elements con el input de texto ya sin disabled y el input de tipo submit todavía con disabled" loading="lazy">
+                    <figcaption>Captura 2: el campo de texto ya está editado; el botón sigue deshabilitado.</figcaption>
+                </figure>
 
-                <!-- Flags: no las publiques completas. Usa algo como FLAG{********}. -->
+                <h3>Paso 3: Quitar el atributo disabled del botón</h3>
+                <p>Se repite la edición en el botón <code>authbutton</code>. Con los dos atributos eliminados, el formulario queda activo en la página.</p>
+<pre><code>&lt;!-- antes --&gt;
+&lt;input disabled type="submit" value="Member access" name="authbutton"&gt;
+
+&lt;!-- después --&gt;
+&lt;input type="submit" value="Member access" name="authbutton"&gt;</code></pre>
+                <figure class="evidence">
+                    <img src="./img/Disabled_3.jpeg" alt="Formulario con el campo de texto y el botón Member access ya habilitados, junto al DOM editado" loading="lazy">
+                    <figcaption>Captura 3: campo y botón habilitados.</figcaption>
+                </figure>
+
+                <h3>Paso 4: Rellenar el campo y enviar el formulario</h3>
+                <p>Con el campo activo se escribe un valor, en este caso <code>admin</code>, y se pulsa <strong>Member access</strong>.</p>
+                <figure class="evidence">
+                    <img src="./img/Disabled_4.jpeg" alt="Campo de texto con el valor admin escrito y el botón Member access listo para pulsar" loading="lazy">
+                    <figcaption>Captura 4: el campo acepta texto y el formulario está listo para enviarse.</figcaption>
+                </figure>
+
+                <h3>Paso 5: Resultado</h3>
+                <p>La página responde con el mensaje <em>Member access granted!</em> y muestra la contraseña de validación del reto. Está tachada en la captura a propósito.</p>
+                <figure class="evidence">
+                    <img src="./img/Disabled_5.jpeg" alt="Mensaje de acceso concedido con la contraseña de validación tachada en rojo" loading="lazy">
+                    <figcaption>Captura 5: acceso concedido. La contraseña de validación está oculta.</figcaption>
+                </figure>
+
                 <div class="notice"><strong>Spoiler:</strong> las flags están ocultas a propósito. Resuelve el reto tú mismo y usa esta guía solo como apoyo.</div>
 
                 <!-- Video de YouTube (opcional): quita los comentarios y cambia VIDEO_ID.
@@ -95,8 +119,9 @@
 
                 <h2>Lecciones aprendidas</h2>
                 <ul>
-                    <li>Qué vulnerabilidad estaba presente y por qué.</li>
-                    <li>Cómo se previene o se corrige.</li>
+                    <li>El atributo <code>disabled</code> solo controla lo que muestra el navegador. Quien usa la página puede editarlo desde las herramientas de desarrollador y no protege nada.</li>
+                    <li>Todo control de acceso debe validarse en el servidor. Ocultar, deshabilitar o bloquear elementos en el cliente es solo una ayuda visual.</li>
+                    <li>Las herramientas de desarrollador (<strong>Elements</strong> y <strong>Sources</strong>) son lo primero que conviene mirar en los retos de la categoría web de cliente.</li>
                 </ul>
             </article>
 

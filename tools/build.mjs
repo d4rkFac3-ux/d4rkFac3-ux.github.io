@@ -76,8 +76,9 @@ async function readEntries(files) {
         try { meta = JSON.parse(metaMatch[1]); }
         catch (error) { fail(`${rel}: el JSON de "reto-meta" no es válido (${error.message}). Revisa comas y comillas.`); }
 
-        const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
-        const lead = html.match(/<p[^>]*class=["'][^"']*\blead\b[^"']*["'][^>]*>([\s\S]*?)<\/p>/i);
+        const visibleHtml = html.replace(/<!--[\s\S]*?-->/g, '');   // ignora comentarios (la plantilla menciona <h1> en uno)
+        const h1 = visibleHtml.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+        const lead = visibleHtml.match(/<p[^>]*class=["'][^"']*\blead\b[^"']*["'][^>]*>([\s\S]*?)<\/p>/i);
         const section = parts[0];
         const platformSlug = parts[1];
         const dir = parts.slice(0, -1).join('/');
